@@ -1,3 +1,0 @@
-== link:index.html[Index] -> Cherokee's Distribution
-
-  . link:distro_dev_intro.html[Introduction to Development]: How to build a package.
