@@ -3,7 +3,6 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <stdbool.h>
 #include <sys/syscall.h>
 #include <string.h>
 #include <pthread.h>
@@ -14,7 +13,7 @@
 #define __SOURCEFILE__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
 #define rlog(format, ...) { \
     if( LOGGING ) { \
-        fprintf(stdout, "[smv] " format, ##__VA_ARGS__); \
+        fprintf(stdout, "[smv-pyr] " format, ##__VA_ARGS__); \
         fflush(NULL);   \
     }\
 }
@@ -35,7 +34,7 @@ extern "C" {
 #endif
 
 /* Telling the kernel that this process will be using the secure memory view model */
-int smv_main_init(int);
+  int smv_main_init(int, int);
 
 /* Create a smv and return the ID of the newly created smv */
 int smv_create(void);
@@ -55,8 +54,14 @@ int smv_is_in_domain(int memdom_id, int smv_id);
 /* Create an smv thread running in a smv */
 int smvthread_create(int smv_id, pthread_t *tid, void *(fn)(void*), void *args);
 
+/* Create an SMV thread with the given attributes running in an SMV */
+int smvthread_create_attr(int smv_id, pthread_t* tid, const pthread_attr_t *attr, void*(fn)(void*), void* args);
+  
 /* Check whether a smv exists */
 int smv_exists(int smv_id);
+
+/* Get the smv ID of the current thread */
+int smvthread_get_id(void);
 
 #ifdef __cplusplus
 }
