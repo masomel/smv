@@ -45,12 +45,14 @@ int main(){
 
     for (i = 0; i < NUM_THREADS; i++) {
         rv = smvthread_create(smv_id[i], &tid[i], fn, NULL);
+        //rv = pthread_create(&tid[i], NULL, fn, NULL);
         if (rv == -1) {
             printf("smvthread_create error\n");
         }
     }
 
     /* Add privilege and delete them in serve order */
+    smv_join_domain(memdom_id, smv_id[0]);
     memdom_priv_add(memdom_id, smv_id[0], MEMDOM_READ);
     privs = memdom_priv_get(memdom_id, smv_id[0]);
     printf("smv %d privs %x memdom %d\n", smv_id[0], privs, memdom_id);
